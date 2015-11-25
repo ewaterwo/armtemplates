@@ -43,10 +43,10 @@
     },
     "routeTable2Name" : {
       "type" : "string"
-    }
+    },
     "routeTable3Name" : {
       "type" : "string"
-    }
+    },
     "routeTable4Name" : {
       "type" : "string"
     }
@@ -58,8 +58,8 @@
     "subnet3" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet3Name'))]",
     "subnet4" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet4Name'))]",
     "routeTable1Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-    "routeTable2Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]"
-    "routeTable3Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]"
+    "routeTable2Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
+    "routeTable3Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
     "routeTable4Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable4Name'))]"
   },
   "resources": [
@@ -89,7 +89,7 @@
             "id": "[variables('routeTable2Id')]"
           }
         }
-    }
+    },
     {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/virtualNetworks/subnets",
@@ -104,7 +104,7 @@
             "id": "[variables('routeTable3Id')]"
           }
         }
-    }
+    },
     {
         "apiVersion": "2015-06-15",
         "type": "Microsoft.Network/virtualNetworks/subnets",
@@ -129,11 +129,11 @@
     "subnet2Ref": {
       "value": "[variables('subnet2')]",
       "type": "string"
-    }
+    },
     "subnet3Ref": {
       "value": "[variables('subnet3')]",
       "type": "string"
-    }
+    },
     "subnet4Ref": {
       "value": "[variables('subnet4')]",
       "type": "string"
