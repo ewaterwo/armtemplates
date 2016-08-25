@@ -228,5 +228,6 @@
     "subnet8Ref": {
       "value": "[variables('subnet8')]",
       "type": "string"
-    }  }
+    } 
+  }
 }
