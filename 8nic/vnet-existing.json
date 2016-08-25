@@ -35,6 +35,37 @@
     "Subnet4Prefix": {
       "type": "string"
     },
+,
+    "Subnet4Name": {
+      "type": "string"
+    },
+    "Subnet4Prefix": {
+      "type": "string"
+    },
+    "Subnet5Name": {
+      "type": "string"
+    },
+    "Subnet5Prefix": {
+      "type": "string"
+    },
+    "Subnet6Name": {
+      "type": "string"
+    },
+    "Subnet6Prefix": {
+      "type": "string"
+    },
+    "Subnet7Name": {
+      "type": "string"
+    },
+    "Subnet7Prefix": {
+      "type": "string"
+    },
+    "Subnet8Name": {
+      "type": "string"
+    },
+    "Subnet8Prefix": {
+      "type": "string"
+    },
     "vnetExistingRGName" : {
       "type" : "string"
     },
@@ -49,6 +80,18 @@
     },
     "routeTable4Name" : {
       "type" : "string"
+    },
+    "routeTable5Name" : {
+      "type" : "string"
+    },
+    "routeTable6Name" : {
+      "type" : "string"
+    },
+    "routeTable7Name" : {
+      "type" : "string"
+    },
+    "routeTable8Name" : {
+      "type" : "string"
     }
   },
   "variables": {
@@ -57,10 +100,18 @@
     "subnet2" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet2Name'))]",
     "subnet3" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet3Name'))]",
     "subnet4" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet4Name'))]",
+    "subnet5" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet5Name'))]",
+    "subnet6" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet6Name'))]",
+    "subnet7" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet7Name'))]",
+    "subnet8" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet8Name'))]",
     "routeTable1Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
     "routeTable2Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
     "routeTable3Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
     "routeTable4Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable4Name'))]"
+    "routeTable5Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable5Name'))]",
+    "routeTable6Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable6Name'))]",
+    "routeTable7Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable7Name'))]",
+    "routeTable8Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable8Name'))]"
   },
   "resources": [
   ],
@@ -80,6 +131,22 @@
     "subnet4Ref": {
       "value": "[variables('subnet4')]",
       "type": "string"
-    }
+    },
+    "subnet5Ref": {
+      "value": "[variables('subnet5')]",
+      "type": "string"
+    },
+    "subnet6Ref": {
+      "value": "[variables('subnet6')]",
+      "type": "string"
+    },
+    "subnet7Ref": {
+      "value": "[variables('subnet7')]",
+      "type": "string"
+    },
+    "subnet8Ref": {
+      "value": "[variables('subnet8')]",
+      "type": "string"
+    } 
   }
 }
