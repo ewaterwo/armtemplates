@@ -35,7 +35,6 @@
  
         "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
         "osDiskVhdName": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/',parameters('vmName'),'osDisk.vhd')]",
-        "osDisk": "[variables(concat('osDisk',parameters('osDiskMode')))]",	  
   	    "osProfile": "[variables(concat('osprofile',parameters('authenticationType')))]",
         "osProfilesshPublicKey": {
             "computername": "[parameters('vmName')]",
