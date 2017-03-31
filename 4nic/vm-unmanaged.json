@@ -27,15 +27,15 @@
     "adminPassword": {
       "type": "string"
     },
-  	"authenticationType": {
+  	"sshPublicKey": {
       "type": "string"
-    },
-
-  },
+    }
+  }
   "variables" : {
  
-       "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
-       "osDisk": "[variables(concat('osDisk',parameters('osDiskMode')))]",	  
+        "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+        "osDiskVhdName": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/',parameters('vmName'),'osDisk.vhd')]",
+        "osDisk": "[variables(concat('osDisk',parameters('osDiskMode')))]",	  
   	    "osProfile": "[variables(concat('osprofile',parameters('authenticationType')))]",
         "osProfilesshPublicKey": {
             "computername": "[parameters('vmName')]",
@@ -56,9 +56,9 @@
             "computername": "[parameters('vmName')]",
             "adminUsername": "[parameters('adminUsername')]",
             "adminPassword": "[parameters('adminPassword')]"
-        },
- },
-  "resources": [
+        }
+ }
+ "resources": [
 
          {
             "apiVersion": "2016-04-30-preview",
@@ -89,8 +89,16 @@
                         "sku": "asav-azure-byol",
                         "version": "latest"
                     },
-                    "osDisk": "[variables('osDisk')]"               
-                },
+                    "osDisk": {
+                         "name": "[concat(parameters('vmName'),'-osDisk')]",
+                         "caching": "ReadWrite",
+                         "createOption": "FromImage",
+                         "vhd": {
+                             "uri": "[[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('StorageAccountName')), '2015-06-15').primaryEndpoints.blob, parameters('StorageAccountName'),'/',variables('OSDiskVhdName'),'.vhd')]]"
+                         }
+                     
+                    }
+                }
                 "networkProfile": {
                     "networkInterfaces": [
                         {
