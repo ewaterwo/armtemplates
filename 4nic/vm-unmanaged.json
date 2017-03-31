@@ -32,9 +32,8 @@
     }
   },
   "variables" : {
- 
         "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
-        "osDiskVhdName": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net/vhds/',parameters('vmName'),'osDisk.vhd')]",
+        "OSDiskName": "[concat(parameters('vmName'),'-disk')]",
   	    "osProfile": "[variables(concat('osprofile',parameters('authenticationType')))]",
         "osProfilesshPublicKey": {
             "computername": "[parameters('vmName')]",
@@ -86,7 +85,7 @@
                          "caching": "ReadWrite",
                          "createOption": "FromImage",
                          "vhd": {
-                             "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('StorageAccountName')), '2015-06-15').primaryEndpoints.blob, parameters('StorageAccountName'),'/',variables('OSDiskVhdName'),'.vhd')]"
+                             "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('StorageAccountName')), '2015-06-15').primaryEndpoints.blob, parameters('StorageAccountName'),'/',variables('OSDiskName'),'.vhd')]"
                         }
                      
                     }
