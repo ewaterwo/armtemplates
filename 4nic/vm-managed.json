@@ -1,0 +1,129 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+ 
+  	"vmName": {
+      "type": "string"
+    },
+  	"location": {
+      "type": "string"
+    },
+   	"vmSize": {
+      "type": "string"
+    },
+   	"storageAccountName": {
+      "type": "string"
+    },
+   	"osDiskMode": {
+      "type": "string"
+    },
+   	"authenticationType": {
+      "type": "string"
+    },
+   	"adminUsername": {
+      "type": "string"
+    },
+    "adminPassword": {
+      "type": "string"
+    },
+  	"sshPublicKey": {
+      "type": "string"
+    }
+  },
+  "variables" : {
+        "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
+        "OSDiskName": "[concat(parameters('vmName'),'-disk')]",
+  	    "osProfile": "[variables(concat('osprofile',parameters('authenticationType')))]",
+        "osProfilesshPublicKey": {
+            "computername": "[parameters('vmName')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "linuxConfiguration": {
+                "disablePasswordAuthentication": "true",
+                "ssh": {
+                    "publicKeys": [
+                        {
+                            "path": "[variables('sshKeyPath')]",
+                            "keyData": "[parameters('sshPublicKey')]"
+                        }
+                    ]
+                }
+            }
+        },
+        "osProfilepassword": {
+            "computername": "[parameters('vmName')]",
+            "adminUsername": "[parameters('adminUsername')]",
+            "adminPassword": "[parameters('adminPassword')]"
+        }
+ },
+ "resources": [
+
+         {
+            "apiVersion": "2016-04-30-preview",
+            "type": "Microsoft.Compute/virtualMachines",
+            "name": "[parameters('vmName')]",
+            "location": "[parameters('location')]",
+            "plan": {
+                "name": "asav-azure-byol",
+                "product": "cisco-asav",
+                "publisher": "cisco"
+            },           
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": "[variables('osProfile')]",
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "cisco",
+                        "offer": "cisco-asav",
+                        "sku": "asav-azure-byol",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                         "caching": "ReadWrite",
+                         "createOption": "FromImage",
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "properties": {
+                                "primary": true
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic0'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic1'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic2'))]"
+                        },
+                        {
+                            "properties": {
+                                "primary": false
+                            },
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('vmName'),'-Nic3'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": "true",
+                        "storageUri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net')]"
+                    }
+                }
+               
+            }
+        } 	  
+  	  
+  	  
+  	   ],
+  "outputs": {  }
+}
