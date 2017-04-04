@@ -2,7 +2,15 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
- 
+    "imagePublisher":  {
+      "type": "string"
+    },
+    "imageOffer":  {
+      "type": "string"
+    },
+    "imageSKU":  {
+      "type": "string"
+    },
   	"vmName": {
       "type": "string"
     },
@@ -12,7 +20,7 @@
    	"vmSize": {
       "type": "string"
     },
-   	"storageAccountName": {
+   	"newStorageAccountName": {
       "type": "string"
     },
    	"osDiskMode": {
@@ -64,9 +72,9 @@
             "name": "[parameters('vmName')]",
             "location": "[parameters('location')]",
             "plan": {
-                "name": "asav-azure-byol",
-                "product": "cisco-asav",
-                "publisher": "cisco"
+                "name": "[parameters('imageSKU')]",
+                "product": "[parameters('imageOffer')]",
+                "publisher": "[parameters('imagePublisher')]"
             },           
             "properties": {
                 "hardwareProfile": {
@@ -75,14 +83,14 @@
                 "osProfile": "[variables('osProfile')]",
                 "storageProfile": {
                     "imageReference": {
-                        "publisher": "cisco",
-                        "offer": "cisco-asav",
-                        "sku": "asav-azure-byol",
-                        "version": "latest"
+                        "publisher": "[parameters('imagePublisher')]",
+                        "offer": "[parameters('imageOffer')]",
+                        "sku": "[parameters('imageSKU')]",
+                        "version": "97.1.1"
                     },
                     "osDisk": {
                          "caching": "ReadWrite",
-                         "createOption": "FromImage",
+                         "createOption": "FromImage"
                     }
                 },
                 "networkProfile": {
@@ -116,7 +124,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": "true",
-                        "storageUri": "[concat('http://',parameters('storageAccountName'),'.blob.core.windows.net')]"
+                        "storageuri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName')), '2015-06-15').primaryEndpoints.blob)]"
                     }
                 }
                
