@@ -20,7 +20,7 @@
    	"vmSize": {
       "type": "string"
     },
-   	"newStorageAccountName": {
+   	"storageAccountName": {
       "type": "string"
     },
    	"osDiskMode": {
@@ -93,7 +93,7 @@
                          "caching": "ReadWrite",
                          "createOption": "FromImage",
                          "vhd": {
-                             "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName')), '2015-06-15').primaryEndpoints.blob, parameters('newStorageAccountName'),'/',variables('OSDiskName'),'.vhd')]"
+                             "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), '2015-06-15').primaryEndpoints.blob, parameters('storageAccountName'),'/',variables('OSDiskName'),'.vhd')]"
                         }
                      
                     }
@@ -129,7 +129,7 @@
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": "true",
-                        "storageuri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName')), '2015-06-15').primaryEndpoints.blob)]"
+                        "storageuri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('storageAccountName')), '2015-06-15').primaryEndpoints.blob)]"
                     }
                 }
                
