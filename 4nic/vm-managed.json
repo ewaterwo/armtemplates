@@ -20,7 +20,7 @@
    	"vmSize": {
       "type": "string"
     },
-   	"newStorageAccountName": {
+   	"storageAccountName": {
       "type": "string"
     },
    	"osDiskMode": {
