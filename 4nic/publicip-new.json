@@ -21,6 +21,22 @@
     "publicIPNewOrExisting" : {
       "type" : "string",
       "defaultValue" : ""
+    },
+    "apiVer" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "vmName" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "nsgname" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "subnet1StartAddress" : {
+      "type" : "string",
+      "defaultValue" : ""
     }
   },
   "resources": [
@@ -37,14 +53,14 @@
       }
     },
     {
-            "apiVersion": "[variables('apiVer')]",
+            "apiVersion": "[parameters('apiVer')]",
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(parameters('vmName'),'-Nic0')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Resources/deployments/', 'SettingUpVirtualNetwork')]",
                 "[concat('Microsoft.Network/networkSecurityGroups/',variables('nsgname'))]",
-                "[concat('Microsoft.Resources/deployments/', 'SettingupPublicIp')]"
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName')]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -57,7 +73,7 @@
                                 "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1Ref.value]"
                             },
                             "publicIPAddress":{
-                            	"id": "[reference('Microsoft.Resources/deployments/SettingUpPublicIP', '2015-01-01').outputs.publicIpId.value]"    
+                            	"id": "[reference('Microsoft.Network/publicIPAddresses/[parameters('publicIpAddressName')]', '2015-01-01')]"    
                             }
                         }
                     }
