@@ -83,7 +83,7 @@
                 },
                 "enableIPForwarding": true
               }
-        },
+        }
 
   ],
   "outputs": {
