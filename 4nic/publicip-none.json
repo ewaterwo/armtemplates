@@ -17,6 +17,10 @@
     "publicIpRGName": {
       "type": "string",
       "defaultValue" : ""
+    },
+    "publicIPNewOrExisting" : {
+      "type" : "string",
+      "defaultValue" : ""
     }
   },
   "variables": {
