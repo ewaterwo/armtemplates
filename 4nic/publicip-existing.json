@@ -71,7 +71,8 @@
                 },
                 "enableIPForwarding": true
               }
-        }],
+        }
+  ],
   "outputs": {
     "publicIpId": {
       "value": "[variables('publicIpId')]",
