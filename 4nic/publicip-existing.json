@@ -57,7 +57,7 @@
                                 "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1Ref.value]"
                             },
                             "publicIPAddress":{
-                                "id": "[resourceId(parameters('publicIpRGName'), 'Microsoft.Network/publicIPAddressess', parameters('publicIPAddressName'))]"
+                                "id": "[resourceId(parameters('publicIpRGName'), 'Microsoft.Network/publicIPAddresses', parameters('publicIPAddressName'))]"
                             }
                         }
                     }
