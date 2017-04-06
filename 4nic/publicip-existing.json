@@ -47,9 +47,6 @@
             "type": "Microsoft.Network/networkInterfaces",
             "name": "[concat(parameters('vmName'),'-Nic0')]",
             "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]"
-            ],
             "properties": {
                 "ipConfigurations": [
                     {
