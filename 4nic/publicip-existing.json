@@ -39,8 +39,7 @@
 
   },
   "variables": {
-    "publicIpId": "[resourceId(parameters('publicIpRGName'),concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]"
-  },
+   },
   "resources": [
       {
             "apiVersion": "[parameters('apiVer')]",
@@ -71,13 +70,5 @@
         }
   ],
   "outputs": {
-    "publicIpId": {
-      "value": "[variables('publicIpId')]",
-      "type": "string"
-    },
-    "fqdn": {
-      "value": "[reference(variables('publicIpId'),providers('Microsoft.Network', 'publicIPAddresses').apiVersions[0]).dnsSettings.fqdn]",
-      "type": "string"
-    }
   }
 }
