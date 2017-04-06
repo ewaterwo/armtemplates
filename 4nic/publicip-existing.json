@@ -19,12 +19,59 @@
     },
     "publicIPNewOrExisting" : {
       "type" : "string"
+    },
+    "apiVer" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "vmName" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "nsgname" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "subnet1StartAddress" : {
+      "type" : "string",
+      "defaultValue" : ""
     }
+
   },
   "variables": {
     "publicIpId": "[resourceId(parameters('publicIpRGName'),concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]"
   },
-  "resources": [],
+  "resources": [
+      {
+            "apiVersion": "[parameters('apiVer')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'),'-Nic0')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress" : "[parameters('subnet1StartAddress')]",
+                            "subnet": {
+                                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1Ref.value]"
+                            },
+                            "publicIPAddress":{
+                            	"id": "[variables(publicIpId)]"    
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgname'))]"
+                },
+                "enableIPForwarding": true
+              }
+        }],
   "outputs": {
     "publicIpId": {
       "value": "[variables('publicIpId')]",
