@@ -38,18 +38,6 @@
     "vnetExistingRGName" : {
       "type" : "string",
       "defaultValue" : ""
-    },
-    "routeTable1Name" : {
-      "type" : "string"
-    },
-    "routeTable2Name" : {
-      "type" : "string"
-    },
-    "routeTable3Name" : {
-      "type" : "string"
-    },
-    "routeTable4Name" : {
-      "type" : "string"
     }
   },
   "variables" : {
@@ -57,12 +45,7 @@
     "subnet1" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet1Name'))]",
     "subnet2" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet2Name'))]",
     "subnet3" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet3Name'))]",
-    "subnet4" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet4Name'))]",
-    "routeTable1Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
-    "routeTable2Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
-    "routeTable3Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
-    "routeTable4Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable4Name'))]"
-  },
+    "subnet4" : "[concat(variables('vnetID'),'/subnets/',parameters('Subnet4Name'))]"  },
   "resources": [
         {
             "apiVersion": "2015-06-15",
@@ -79,37 +62,25 @@
                     {
                         "name": "[parameters('Subnet1Name')]",
                         "properties": {
-                            "addressPrefix": "[parameters('Subnet1Prefix')]",
-                            "routeTable": {
-                                "id": "[variables('routeTable1Id')]"
-                            }
+                            "addressPrefix": "[parameters('Subnet1Prefix')]"                        
                         }
                     },
                     {
                         "name": "[parameters('Subnet2Name')]",
                         "properties": {
-                            "addressPrefix": "[parameters('Subnet2Prefix')]",
-                            "routeTable": {
-                                "id": "[variables('routeTable2Id')]"
-                            }
+                            "addressPrefix": "[parameters('Subnet2Prefix')]"                        
                         }
                     },
                     {
                         "name": "[parameters('Subnet3Name')]",
                         "properties": {
-                            "addressPrefix": "[parameters('Subnet3Prefix')]",
-                            "routeTable": {
-                                "id": "[variables('routeTable3Id')]"
-                            }
+                            "addressPrefix": "[parameters('Subnet3Prefix')]"                        
                         }
                     },
                     {
                         "name": "[parameters('Subnet4Name')]",
                         "properties": {
-                            "addressPrefix": "[parameters('Subnet4Prefix')]",
-                            "routeTable": {
-                                "id": "[variables('routeTable4Id')]"
-                            }
+                            "addressPrefix": "[parameters('Subnet4Prefix')]"                        
                         }
                     }
                 ]
