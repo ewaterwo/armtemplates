@@ -37,7 +37,12 @@
     },
   	"sshPublicKey": {
       "type": "string"
+    },
+    "availSet": {
+      "type": "string"
     }
+
+
   },
   "variables" : {
         "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
@@ -79,6 +84,9 @@
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
+                },
+                "availabilitySet": {
+                  "id": "[resourceId('Microsoft.Compute/availabilitySets/', parameters('availSet'))]"
                 },
                 "osProfile": "[variables('osProfile')]",
                 "storageProfile": {
