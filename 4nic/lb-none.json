@@ -1,0 +1,73 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "publicIpAddressName": {
+      "type": "string"
+    },
+    "publicIPAddressType": {
+      "type": "string"
+    },
+    "dnsPrefix": {
+      "type": "string"
+    },
+    "publicIpRGName": {
+      "type": "string",
+      "defaultValue" : ""
+    },
+    "publicIPNewOrExisting" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "apiVer" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "vmName" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "nsgname" : {
+      "type" : "string",
+      "defaultValue" : ""
+    },
+    "subnet1StartAddress" : {
+      "type" : "string",
+      "defaultValue" : ""
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+        {
+            "apiVersion": "[parameters('apiVer')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName'),'-Nic0')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress" : "[parameters('subnet1StartAddress')]",
+                            "subnet": {
+                                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1Ref.value]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgname'))]"
+                },
+                "enableIPForwarding": true
+              }
+        }
+
+  ],
+  "outputs": {
+  }
+}
