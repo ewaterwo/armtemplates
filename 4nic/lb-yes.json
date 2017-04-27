@@ -5,93 +5,150 @@
     "location": {
       "type": "string"
     },
-    "publicIpAddressName": {
+    "elb_name": {
       "type": "string"
     },
-    "publicIPAddressType": {
+    "elb_pip_name": {
       "type": "string"
     },
-    "dnsPrefix": {
+    "elb_pip_dns": {
       "type": "string"
     },
-    "publicIpRGName": {
-      "type": "string",
-      "defaultValue" : ""
+    "elb_pip_type": {
+      "type": "string"
     },
-    "publicIPNewOrExisting" : {
-      "type" : "string",
-      "defaultValue" : ""
+    "elb_backend_pool_name": {
+      "type": "string"
     },
-    "apiVer" : {
-      "type" : "string",
-      "defaultValue" : ""
+    "elb_frontEndIPConfigID": {
+      "type": "string"
     },
-    "vmName" : {
-      "type" : "string",
-      "defaultValue" : ""
+    "elb_poolID" : {
+      "type" : "string"
     },
-    "nsgname" : {
-      "type" : "string",
-      "defaultValue" : ""
-    },
-    "subnet1StartAddress" : {
-      "type" : "string",
-      "defaultValue" : ""
+    "elb_probeID" : {
+      "type" : "string"
     }
   },
   "resources": [
-    {
-      "apiVersion": "2015-06-15",
-      "type": "Microsoft.Network/publicIPAddresses",
-      "name": "[parameters('publicIpAddressName')]",
-      "location": "[parameters('location')]",
-      "properties": {
-        "publicIPAllocationMethod": "[parameters('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsPrefix')]"
-        }
-      }
-    },
-    {
-            "apiVersion": "[parameters('apiVer')]",
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[concat(parameters('vmName'),'-Nic0')]",
+       {
+          "apiVersion": "2015-06-15",
+          "type": "Microsoft.Network/publicIPAddresses",
+          "name": "[parameters('elb_pip_name')]",
+          "location": "[parameters('location')]",
+          "properties": {
+            "publicIPAllocationMethod": "[parameters('elb_pip_type')]",
+            "dnsSettings": {
+              "domainNameLabel": "[parameters('elb_pip_dns')]"
+            }
+          }
+       },
+   
+       {
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "[parameters('elb_name')]",
+            "apiVersion": "2016-03-30",
             "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIpAddressName'))]"
-            ],
             "properties": {
-                "ipConfigurations": [
+                "frontendIPConfigurations": [
+                {
+                    "name": "LoadBalancerFrontEnd",
+                    "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses/', parameters('elb_pip_name'))]"
+                        }
+                    }
+                }
+                ],
+                "backendAddressPools": [
+                {
+                    "name": "[parameters('elb_backend_pool_name')]"
+                }
+                ],
+                "probes": [
                     {
-                        "name": "ipconfig1",
+                        "name": "tcpProbe",
                         "properties": {
-                            "privateIPAllocationMethod": "Static",
-                            "privateIPAddress" : "[parameters('subnet1StartAddress')]",
-                            "subnet": {
-                                "id": "[reference('Microsoft.Resources/deployments/SettingUpVirtualNetwork', '2015-01-01').outputs.subnet1Ref.value]"
+                            "protocol": "Tcp",
+                            "port": 22,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "ssh",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('elb_frontEndIPConfigID')]"
                             },
-                            "publicIPAddress":{
-                            	"id": "[resourceId(concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]"    
+                            "frontendPort": 22,
+                            "backendPort": 22,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[parameters('elb_poolID')]"
+                            },
+                            "probe": {
+                                "id": "[parameters('elb_ProbeID')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "http",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('elb_frontEndIPConfigID')]"
+                            },
+                            "frontendPort": 80,
+                            "backendPort": 80,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[parameters('elb_poolID')]"
+                            },
+                            "probe": {
+                                "id": "[parameters('elb_ProbeID')]"
+                            }
+                        }
+                    },
+                    {
+                        "name": "iperf",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('elb_frontEndIPConfigID')]"
+                            },
+                            "frontendPort": 5001,
+                            "backendPort": 5001,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[parameters('elb_poolID')]"
+                            },
+                            "probe": {
+                                "id": "[parameters('elb_ProbeID')]"
                             }
                         }
                     }
                 ],
-                "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgname'))]"
-                },
-                "enableIPForwarding": true
-              }
+                "inboundNatRules": [],
+                "outboundNatRules": [],
+                "inboundNatPools": []
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses/', parameters('elb_pip_name'))]"
+            ]
         }
-
   ],
   "outputs": {
-    "publicIpId": {
-      "value": "[resourceId(concat('Microsoft.Network','/','publicIPAddresses'),parameters('publicIPAddressName'))]",
-      "type": "string"
-    },
-    "fqdn": {
-      "value": "[reference(resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIpAddressName')),providers('Microsoft.Network', 'publicIPAddresses').apiVersions[0]).dnsSettings.fqdn]",
-      "type": "string"
-    }
   }
 }
