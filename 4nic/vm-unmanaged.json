@@ -37,6 +37,9 @@
     },
   	"sshPublicKey": {
       "type": "string"
+    },
+    "availSet": {
+      "type": "string"
     }
   },
   "variables" : {
@@ -79,6 +82,9 @@
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
+                },
+                "availabilitySet": {
+                  "id": "[resourceId('Microsoft.Compute/availabilitySets/', parameters('availSet'))]"
                 },
                 "osProfile": "[variables('osProfile')]",
                 "storageProfile": {
