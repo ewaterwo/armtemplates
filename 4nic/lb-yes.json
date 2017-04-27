@@ -17,7 +17,7 @@
     "elb_pip_type": {
       "type": "string"
     },
-    "elb_backend_pool_name": {
+    "elb_backpool_name": {
       "type": "string"
     },
     "elb_frontEndIPConfigID": {
@@ -63,7 +63,7 @@
                 ],
                 "backendAddressPools": [
                 {
-                    "name": "[parameters('elb_backend_pool_name')]"
+                    "name": "[parameters('elb_backpool_name')]"
                 }
                 ],
                 "probes": [
