@@ -5,6 +5,12 @@
     "location": {
       "type": "string"
     },
+    "vmName-A": {
+      "type": "string"
+    },
+    "vmName-B": {
+      "type": "string"
+    },
     "elb_name": {
       "type": "string"
     },
@@ -47,7 +53,7 @@
        {
             "type": "Microsoft.Network/loadBalancers",
             "name": "[parameters('elb_name')]",
-            "apiVersion": "2016-03-30",
+            "apiVersion": "2017-03-01",
             "location": "[parameters('location')]",
             "properties": {
                 "frontendIPConfigurations": [
@@ -147,6 +153,31 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses/', parameters('elb_pip_name'))]"
             ]
+        },
+    
+    
+    
+        {
+            "apiVersion": "[parameters('apiVer')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[concat(parameters('vmName-A'),'-Nic0')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/loadBalancers/', parameters('elb_name'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "loadBalancerBackendAddressPools": [
+                           {
+                               "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('elb_name')), concat('/backendAddressPools/', parameters('elb_backpool_name')))]"
+                           }
+                        ]
+                    }
+                ],
+                "enableIPForwarding": true
+              }
         }
   ],
   "outputs": {
