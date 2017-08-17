@@ -2,17 +2,11 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "imagePublisher":  {
-      "type": "string"
+    "userImageName":  {
+        "type": "string"
     },
-    "imageOffer":  {
-      "type": "string"
-    },
-    "imageSKU":  {
-      "type": "string"
-    },
-    "imageVersion":  {
-      "type": "string"
+    "osDiskVhdName":  {
+        "type": "string"
     },
   	"vmName": {
       "type": "string"
@@ -77,11 +71,6 @@
             "type": "Microsoft.Compute/virtualMachines",
             "name": "[parameters('vmName')]",
             "location": "[parameters('location')]",
-            "plan": {
-                "name": "[parameters('imageSKU')]",
-                "product": "[parameters('imageOffer')]",
-                "publisher": "[parameters('imagePublisher')]"
-            },           
             "properties": {
                 "hardwareProfile": {
                     "vmSize": "[parameters('vmSize')]"
@@ -91,20 +80,18 @@
                 },
                 "osProfile": "[variables('osProfile')]",
                 "storageProfile": {
-                    "imageReference": {
-                        "publisher": "[parameters('imagePublisher')]",
-                        "offer": "[parameters('imageOffer')]",
-                        "sku": "[parameters('imageSKU')]",
-                        "version": "[parameters('imageVersion')]"
-                    },
                     "osDisk": {
                          "name": "[concat(parameters('vmName'),'-osDisk')]",
+                         "osType": "Linux",
                          "caching": "ReadWrite",
                          "createOption": "FromImage",
-                         "vhd": {
-                             "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName')), '2015-06-15').primaryEndpoints.blob, parameters('newStorageAccountName'),'/',variables('OSDiskName'),'.vhd')]"
-                        }
-                     
+                         "image": {
+                            "uri": "[parameters('userImageName')]"
+                          },
+                          "vhd": {
+                            "uri": "[parameters('osDiskVhdName')]"
+                          }
+                         
                     }
                 },
                 "networkProfile": {
