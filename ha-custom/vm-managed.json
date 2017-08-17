@@ -3,10 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "userImageName":  {
-        "type": "string"
-    },
-    "osDiskVhdName":  {
-        "type": "string"
+      "type": "string"
     },
   	"vmName": {
       "type": "string"
@@ -14,10 +11,10 @@
   	"location": {
       "type": "string"
     },
-   	"availSet": {
+  	"availSet": {
       "type": "string"
     },
-  	"vmSize": {
+   	"vmSize": {
       "type": "string"
     },
    	"newStorageAccountName": {
@@ -41,7 +38,6 @@
   },
   "variables" : {
         "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
-        "OSDiskName": "[concat(parameters('vmName'),'-disk')]",
   	    "osProfile": "[variables(concat('osprofile',parameters('authenticationType')))]",
         "osProfilesshPublicKey": {
             "computername": "[parameters('vmName')]",
@@ -81,18 +77,12 @@
                 "osProfile": "[variables('osProfile')]",
                 "storageProfile": {
                     "osDisk": {
-                         "name": "[concat(parameters('vmName'),'-osDisk')]",
-                         "osType": "Linux",
                          "caching": "ReadWrite",
                          "createOption": "FromImage",
                          "image": {
                             "uri": "[parameters('userImageName')]"
-                          },
-                          "vhd": {
-                            "uri": "[parameters('osDiskVhdName')]"
                           }
-                         
-                    }
+                       }
                 },
                 "networkProfile": {
                     "networkInterfaces": [
