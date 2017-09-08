@@ -35,7 +35,6 @@
     "Subnet4Prefix": {
       "type": "string"
     },
-,
     "Subnet4Name": {
       "type": "string"
     },
