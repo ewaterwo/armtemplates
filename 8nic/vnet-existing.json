@@ -106,7 +106,7 @@
     "routeTable1Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable1Name'))]",
     "routeTable2Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable2Name'))]",
     "routeTable3Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable3Name'))]",
-    "routeTable4Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable4Name'))]"
+    "routeTable4Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable4Name'))]",
     "routeTable5Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable5Name'))]",
     "routeTable6Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable6Name'))]",
     "routeTable7Id" : "[resourceId('Microsoft.Network/routeTables',parameters('routeTable7Name'))]",
