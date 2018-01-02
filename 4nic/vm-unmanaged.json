@@ -86,7 +86,7 @@
                         "publisher": "[parameters('imagePublisher')]",
                         "offer": "[parameters('imageOffer')]",
                         "sku": "[parameters('imageSKU')]",
-                        "version": "97.1.1"
+                        "version": "99.1.0"
                     },
                     "osDisk": {
                          "name": "[concat(parameters('vmName'),'-osDisk')]",
