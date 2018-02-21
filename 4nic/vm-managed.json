@@ -86,7 +86,7 @@
                         "publisher": "[parameters('imagePublisher')]",
                         "offer": "[parameters('imageOffer')]",
                         "sku": "[parameters('imageSKU')]",
-                        "version": "99.1.0"
+                        "version": "99.1.2"
                     },
                     "osDisk": {
                          "caching": "ReadWrite",
